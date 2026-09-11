@@ -1,0 +1,6 @@
+# Unpinned, latest-version equivalents of requirements.txt.
+Flask
+Flask-SQLAlchemy
+pytest
+pytest-cov
+Werkzeug
