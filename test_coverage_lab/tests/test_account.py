@@ -140,12 +140,13 @@ def test_positive_deposit():
 # Description: Makes sure that depositing a zero or negative value gets rejected 
 # ===========================
 
-@pytest.mark.parametrize("values", [(0), (-100)])
+@pytest.mark.parametrize("values", [(0), (0.0), (-100), (-100.0)])
 def test_negative_or_zero_result(values):
     """Test an amount of negative/zero"""
-    account = Account(name = "Chris Flores", email = "chrisflores@gmai.com", balance = 0.0)
+    account = Account(name = "Chris Flores", email = "chrisflores@gmail.com", balance = 0.0)
     with pytest.raises(DataValidationError):
         account.deposit(values) 
+        assert account.balance == 0.0
     
 
 
