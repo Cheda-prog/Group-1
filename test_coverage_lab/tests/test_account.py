@@ -122,7 +122,7 @@ Each test should include:
 # ===========================
 
 def test_positive_deposit():
-    """"Test depositing a positive amount"""
+    """Test depositing a positive amount"""
     account = Account(name = "Chris Flores", email = "chrisflores@gmai.com", balance = 0.0)
     account.deposit(100)
     assert account.balance == 100
