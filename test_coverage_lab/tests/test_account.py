@@ -171,6 +171,32 @@ def test_withdraw_insufficient_funds():
 # - Verify that password verification works correctly.
 # Target Methods: set_password() / check_password()
 
+# ===========================
+# Test: Test password hashing
+# Author: Barron McCarthy
+# Date: 2026-09-16
+# Description: Ensure passwords are properly hashed and
+# verify that password verification works correctly.
+# Issue: Add a test ensuring passwords are hashed, correct passwords are
+# being accepted, and incorrect passwords are being rejected.
+# ===========================
+
+def test_account_password_hashing():
+    """Test password hashing and verification"""
+    account = Account(name = "John Doe", email = "johndoe@example.com")
+
+    password = "Password123!"
+    account.set_password(password)
+
+    # Check if the the password is hashed by checking if equal to 'password'
+    assert account.password_hash != password
+
+    # Checks for correct password acceptance.
+    assert account.check_password(password) is True
+
+    # Checks for incorrect password rejection.
+    assert account.check_password("Password1234!") is False
+
 # Student 9: Test account deactivation/reactivation
 # - Ensure accounts can be deactivated and reactivated correctly.
 # Target Methods: deactivate() / reactivate()
