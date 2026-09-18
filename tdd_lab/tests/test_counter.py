@@ -27,3 +27,16 @@ class TestCounterEndpoints:
         """It should create a counter"""
         result = client.post('/counters/foo')
         assert result.status_code == status.HTTP_201_CREATED
+
+    def test_list_all_counters(self, client):
+        """It should list all counters"""
+        client.post('/counters/foo')
+        client.post('/counters/bar')
+
+        result = client.get('/counters')
+
+        assert result.status_code == status.HTTP_200_OK
+        assert result.get_json() == {
+            "foo": 0,
+            "bar": 0
+        }
