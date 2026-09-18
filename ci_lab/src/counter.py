@@ -129,11 +129,9 @@ def get_counters_less_than_threshold(threshold):
     filtered_counters = {k: v for k, v in COUNTERS.items() if v < threshold}  # Only keep valid ones
     return jsonify(filtered_counters), status.HTTP_200_OK
 def describe_status(code):
-    match code:
-        case 200:
-            return "OK"
-        case 404:
-            return "Not Found"
-        case _:
-            return "Unknown"
+    mapping = {
+        200: "OK",
+        404: "Not Found",
+    }
+    return mapping.get(code, "Unknown")
 
