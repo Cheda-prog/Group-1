@@ -128,6 +128,21 @@ def test_invalid_email_format():
 # - Verify that depositing a positive amount correctly increases the balance.
 # Target Method: deposit()
 
+# ===========================
+# Test: Positive deposit
+# Author: Christopher Flores
+# Date: 2026-9-11
+# Description: Makes sure that depositing a positive amount increases the balance. 
+# ===========================
+
+def test_positive_deposit():
+    """Test depositing a positive amount"""
+    account = Account(name = "Chris Flores", email = "chrisflores@gmai.com", balance = 0.0)
+    account.deposit(100)
+    assert account.balance == 100
+
+
+
 # Student 5: Test deposit with zero/negative values
 # - Ensure zero or negative deposits are rejected.
 # Target Method: deposit()
