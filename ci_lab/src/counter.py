@@ -12,7 +12,7 @@ COUNTERS = {}
 
 def is_valid_counter_name(name):
     """Validate counter name to ensure it contains only alphanumeric characters"""
-    return re.match(r"^[a-zA-Z0-9_]+$", name) is not None
+    return re.match(r"^[a-zA-Z0-9_@]+$", name) is not None
 
 @app.route('/counters/<name>', methods=['POST'])
 def create_counter(name):
