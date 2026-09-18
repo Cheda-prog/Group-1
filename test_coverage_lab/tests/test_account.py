@@ -104,6 +104,20 @@ Each test should include:
 # - Ensure invalid email formats raise a validation error.
 # Target Method: validate_email()
 
+# ===========================
+# Test: Invalid Email Input
+# Author: Daniela Lopez
+# Date: 2026-09-10
+# Description: Ensure validate_email() rejects invalid email formats.
+# ===========================
+
+def test_invalid_email_format():
+    """Test that an invalid email raises DataValidationError"""
+    account = Account(name="John Doe", email="not-an-email")
+
+    with pytest.raises(DataValidationError):
+        account.validate_email()
+        
 # Student 3: Test missing required fields
 # - Ensure a DataValidationError is raised when name or email is missing.
 # - Note: SQLAlchemy does not validate on construction, so Account() itself
