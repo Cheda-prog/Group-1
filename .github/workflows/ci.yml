@@ -10,14 +10,17 @@ jobs:
     defaults:
       run:
         working-directory: ci_lab  # Set the default working directory for all steps
+    strategy:
+        matrix:
+            python-version: ["3.9", "3.10", "3.11"]
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Set Up Python
+      - name: Set Up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.9"  # Ensure consistency in Python version
+          python-version: ${{ matrix.python-version }}  # Ensure consistency in Python version
 
       - name: Install Dependencies
         run: |
