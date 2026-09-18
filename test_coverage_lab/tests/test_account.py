@@ -104,6 +104,20 @@ Each test should include:
 # - Ensure invalid email formats raise a validation error.
 # Target Method: validate_email()
 
+# ===========================
+# Test: Invalid Email Input
+# Author: Daniela Lopez
+# Date: 2026-09-10
+# Description: Ensure validate_email() rejects invalid email formats.
+# ===========================
+
+def test_invalid_email_format():
+    """Test that an invalid email raises DataValidationError"""
+    account = Account(name="John Doe", email="not-an-email")
+
+    with pytest.raises(DataValidationError):
+        account.validate_email()
+        
 # Student 3: Test missing required fields
 # - Ensure a DataValidationError is raised when name or email is missing.
 # - Note: SQLAlchemy does not validate on construction, so Account() itself
@@ -114,9 +128,41 @@ Each test should include:
 # - Verify that depositing a positive amount correctly increases the balance.
 # Target Method: deposit()
 
+# ===========================
+# Test: Positive deposit
+# Author: Christopher Flores
+# Date: 2026-9-11
+# Description: Makes sure that depositing a positive amount increases the balance. 
+# ===========================
+
+def test_positive_deposit():
+    """Test depositing a positive amount"""
+    account = Account(name = "Chris Flores", email = "chrisflores@gmai.com", balance = 0.0)
+    account.deposit(100)
+    assert account.balance == 100
+
+
+
 # Student 5: Test deposit with zero/negative values
 # - Ensure zero or negative deposits are rejected.
 # Target Method: deposit()
+
+# ===========================
+# Test: deposit with zero/negative values
+# Author: Christopher Flores
+# Date: 2026-9-11
+# Description: Makes sure that depositing a zero or negative value gets rejected 
+# ===========================
+
+@pytest.mark.parametrize("values", [(0), (0.0), (-100), (-100.0)])
+def test_negative_or_zero_result(values):
+    """Test an amount of negative/zero"""
+    account = Account(name = "Chris Flores", email = "chrisflores@gmail.com", balance = 0.0)
+    with pytest.raises(DataValidationError):
+        account.deposit(values) 
+        assert account.balance == 0.0
+    
+
 
 # Student 6: Test valid withdrawal
 # - Verify that withdrawing a valid amount correctly decreases the balance.
