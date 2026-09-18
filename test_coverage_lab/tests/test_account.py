@@ -124,6 +124,27 @@ def test_invalid_email_format():
 #   never raises. Call the validation method on the constructed object.
 # Target Method: validate_required_fields()
 
+# ===========================
+# Test: Missing Required Fields
+# Author: Daniela Lopez
+# Date: 2026-09-10
+# Description: Ensure validate_required_fields() raises DataValidationError when required fields are missing.
+# ===========================
+
+def test_missing_name_raises_error():
+    """Test that a missing name raises DataValidationError"""
+    account = Account(name="", email="johndoe@example.com")
+
+    with pytest.raises(DataValidationError):
+        account.validate_required_fields()
+
+def test_missing_email_raises_error():
+    """Test that a missing email raises DataValidationError"""
+    account = Account(name="John Doe", email="")
+
+    with pytest.raises(DataValidationError):
+        account.validate_required_fields()
+
 # Student 4: Test positive deposit
 # - Verify that depositing a positive amount correctly increases the balance.
 # Target Method: deposit()
