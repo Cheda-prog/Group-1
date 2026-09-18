@@ -27,3 +27,8 @@ def delete_counter(name):
         return '', status.HTTP_404_NOT_FOUND
     del COUNTERS[name]
     return '', status.HTTP_204_NO_CONTENT
+
+@app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)
+def handle_method_not_allowed(error):
+    """Return a JSON error body for unsupported HTTP methods"""
+    return jsonify({"error": "Method Not Allowed"}), status.HTTP_405_METHOD_NOT_ALLOWED

@@ -46,3 +46,19 @@ class TestCounterEndpoints:
         """It should not delete a counter that doesn't exist"""
         result = client.delete('/counters/missing')
         assert result.status_code == status.HTTP_404_NOT_FOUND
+
+    # ===========================
+    # Test: Handle invalid HTTP methods
+    # Author: Alex Cheda
+    # Date: 2026-09-17
+    # Description: Ensure that calling a counter endpoint with an
+    #   unsupported HTTP method returns 405 Method Not Allowed instead
+    #   of crashing or being silently misrouted.
+    # ===========================
+    def test_invalid_method_on_counter(self, client):
+        """It should return 405 with a JSON error body when using an unsupported method"""
+        client.post('/counters/baz')
+        result = client.put('/counters/baz')
+        assert result.status_code == status.HTTP_405_METHOD_NOT_ALLOWED
+        assert result.get_json() is not None
+        assert "error" in result.get_json()
