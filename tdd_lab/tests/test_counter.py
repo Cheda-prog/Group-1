@@ -29,6 +29,22 @@ class TestCounterEndpoints:
         assert result.status_code == status.HTTP_201_CREATED
 
     # ===========================
+    # Test: Incrementing Counter & Prevent updating non-existent counter
+    # Author: Christopher Flores
+    # Date: 2026-09-17
+    # Description: Ensures a counter increments properly & prevents updating a non-existent counter
+    # ===========================
+    def test_increment_counter(self, client):
+        """It should increment an existing counter"""
+        client.post('/counters/increment')
+        result = client.put('/counters/increment')
+        assert result.status_code == status.HTTP_200_OK
+        assert result.get_json()['increment'] == 1
+
+    def test_non_existent_counter(self, client):
+        """It should prevent updating a non-existent counter"""
+        result = client.put('/counters/noCounter')
+        assert result.status_code == status.HTTP_404_NOT_FOUND
     # Test: Delete a counter
     # Author: FinnWant
     # Date: 2026-09-16
