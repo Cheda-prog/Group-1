@@ -28,6 +28,25 @@ class TestCounterEndpoints:
         result = client.post('/counters/foo')
         assert result.status_code == status.HTTP_201_CREATED
 
+
+    # ===========================
+    # Test: List All Counters
+    # Author: Barron McCarthy
+    # Date: 2026-09-18
+    # Description: Ensures all existing counters and their values are returned
+    # ===========================
+    def test_list_all_counters(self, client):
+        """It should list all counters"""
+        client.post('/counters/foo')
+        client.post('/counters/bar')
+
+        result = client.get('/counters')
+
+        assert result.status_code == status.HTTP_200_OK
+        assert result.get_json() == {
+            "foo": 0,
+            "bar": 0
+        }
     # ===========================
     # Test: Incrementing Counter & Prevent updating non-existent counter
     # Author: Christopher Flores
