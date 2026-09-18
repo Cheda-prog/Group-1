@@ -147,6 +147,23 @@ def test_positive_deposit():
 # - Ensure zero or negative deposits are rejected.
 # Target Method: deposit()
 
+# ===========================
+# Test: deposit with zero/negative values
+# Author: Christopher Flores
+# Date: 2026-9-11
+# Description: Makes sure that depositing a zero or negative value gets rejected 
+# ===========================
+
+@pytest.mark.parametrize("values", [(0), (0.0), (-100), (-100.0)])
+def test_negative_or_zero_result(values):
+    """Test an amount of negative/zero"""
+    account = Account(name = "Chris Flores", email = "chrisflores@gmail.com", balance = 0.0)
+    with pytest.raises(DataValidationError):
+        account.deposit(values) 
+        assert account.balance == 0.0
+    
+
+
 # Student 6: Test valid withdrawal
 # - Verify that withdrawing a valid amount correctly decreases the balance.
 # Target Method: withdraw()
