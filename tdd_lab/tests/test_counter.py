@@ -45,3 +45,20 @@ class TestCounterEndpoints:
         """It should prevent updating a non-existent counter"""
         result = client.put('/counters/noCounter')
         assert result.status_code == status.HTTP_404_NOT_FOUND
+    # Test: Delete a counter
+    # Author: FinnWant
+    # Date: 2026-09-16
+    # Description: Ensure a counter can be deleted and deleting a non-existent counter is prevented
+    # ===========================
+    def test_delete_counter(self, client):
+        """It should delete an existing counter"""
+        client.post('/counters/bar')
+        result = client.delete('/counters/bar')
+        assert result.status_code == status.HTTP_204_NO_CONTENT
+        result = client.post('/counters/bar')
+        assert result.status_code == status.HTTP_201_CREATED
+
+    def test_delete_counter_not_found(self, client):
+        """It should not delete a counter that doesn't exist"""
+        result = client.delete('/counters/missing')
+        assert result.status_code == status.HTTP_404_NOT_FOUND
