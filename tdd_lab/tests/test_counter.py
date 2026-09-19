@@ -28,7 +28,6 @@ class TestCounterEndpoints:
         result = client.post('/counters/foo')
         assert result.status_code == status.HTTP_201_CREATED
 
-
     # ===========================
     # Test: List All Counters
     # Author: Barron McCarthy
@@ -81,3 +80,13 @@ class TestCounterEndpoints:
         """It should not delete a counter that doesn't exist"""
         result = client.delete('/counters/missing')
         assert result.status_code == status.HTTP_404_NOT_FOUND
+    # ===========================
+    # Test: Invalid counter names
+    # Author: Tyler Vu
+    # Date: 2026-09-16
+    # Description: Ensure non-alphanumeric coutner names don't pass
+    # ===========================
+    def test_create_invalid_counter_name(self, client):
+        """It should not create a counter with a non-alphanumeric name"""
+        result = client.post('/counters/foo!@#$%')
+        assert result.status_code == status.HTTP_400_BAD_REQUEST
