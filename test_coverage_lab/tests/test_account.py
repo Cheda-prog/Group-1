@@ -275,3 +275,25 @@ def test_account_password_hashing():
 # Student 11: Test deleting an account
 # - Verify that an account can be successfully deleted from the database.
 # Target Method: delete()
+
+# ===========================
+# Test: Delete Account
+# Author: Alex Cheda
+# Date: 2026-09-17
+# Description: Ensure that calling delete() removes the account from the
+#   database, so it can no longer be found by a subsequent query.
+# Issue: Add a test for deleting an account
+# ===========================
+
+def test_delete_account(setup_account):
+    """Test that deleting an account removes it from the database"""
+    account_id = setup_account.id
+
+    # Sanity check: the account exists before deletion
+    assert db.session.get(Account, account_id) is not None
+
+    # Delete the account
+    setup_account.delete()
+
+    # The account should no longer be found in the database
+    assert db.session.get(Account, account_id) is None
