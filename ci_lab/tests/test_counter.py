@@ -41,8 +41,7 @@ class TestCounterEndpoints:
         """It should create a counter"""
         response = client.post('/counters/test_counter')
         assert response.status_code == status.HTTP_201_CREATED
-        # TEMPORARY CONTROLLED FAILURE: intentionally wrong expected value
-        assert response.get_json() == {"test_counter": 999}
+        assert response.get_json() == {"test_counter": 0}
 
     def test_prevent_duplicate_counter(self, client):
         """It should not allow duplicate counters"""
