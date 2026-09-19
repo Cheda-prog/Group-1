@@ -17,9 +17,24 @@ def create_counter(name):
     """Create a counter"""
     if counter_exists(name):
         return jsonify({"error": f"Counter {name} already exists"}), status.HTTP_409_CONFLICT
+    """Check if counter is non-alphanumeric"""
+    if not name.isalnum():
+        return jsonify({"error": f"Invalid counter name: {name}"}), status.HTTP_400_BAD_REQUEST
     COUNTERS[name] = 0
     return jsonify({name: COUNTERS[name]}), status.HTTP_201_CREATED
 
+@app.route('/counters', methods=['GET'])
+def list_counters():
+    """List all counters"""
+    return jsonify(COUNTERS), status.HTTP_200_OK
+@app.route('/counters/<name>', methods =["PUT"])
+def increment_counter(name):
+    """increment a counter"""
+    if not counter_exists(name):
+        return jsonify({"error": f"Counter {name} does not exist"}), status.HTTP_404_NOT_FOUND
+    COUNTERS[name] += 1
+    return jsonify({name: COUNTERS[name]}), status.HTTP_200_OK
+  
 @app.route('/counters/<name>', methods=['DELETE'])
 def delete_counter(name):
     """Delete a counter"""

@@ -124,13 +124,66 @@ def test_invalid_email_format():
 #   never raises. Call the validation method on the constructed object.
 # Target Method: validate_required_fields()
 
+# ===========================
+# Test: Missing Required Fields
+# Author: Daniela Lopez
+# Date: 2026-09-10
+# Description: Ensure validate_required_fields() raises DataValidationError when required fields are missing.
+# ===========================
+
+def test_missing_name_raises_error():
+    """Test that a missing name raises DataValidationError"""
+    account = Account(name="", email="johndoe@example.com")
+
+    with pytest.raises(DataValidationError):
+        account.validate_required_fields()
+
+def test_missing_email_raises_error():
+    """Test that a missing email raises DataValidationError"""
+    account = Account(name="John Doe", email="")
+
+    with pytest.raises(DataValidationError):
+        account.validate_required_fields()
+
 # Student 4: Test positive deposit
 # - Verify that depositing a positive amount correctly increases the balance.
 # Target Method: deposit()
 
+# ===========================
+# Test: Positive deposit
+# Author: Christopher Flores
+# Date: 2026-9-11
+# Description: Makes sure that depositing a positive amount increases the balance. 
+# ===========================
+
+def test_positive_deposit():
+    """Test depositing a positive amount"""
+    account = Account(name = "Chris Flores", email = "chrisflores@gmai.com", balance = 0.0)
+    account.deposit(100)
+    assert account.balance == 100
+
+
+
 # Student 5: Test deposit with zero/negative values
 # - Ensure zero or negative deposits are rejected.
 # Target Method: deposit()
+
+# ===========================
+# Test: deposit with zero/negative values
+# Author: Christopher Flores
+# Date: 2026-9-11
+# Description: Makes sure that depositing a zero or negative value gets rejected 
+# ===========================
+
+@pytest.mark.parametrize("values", [(0), (0.0), (-100), (-100.0)])
+def test_negative_or_zero_result(values):
+    """Test an amount of negative/zero"""
+    account = Account(name = "Chris Flores", email = "chrisflores@gmail.com", balance = 0.0)
+    with pytest.raises(DataValidationError):
+        account.deposit(values) 
+        assert account.balance == 0.0
+    
+
 
 # Student 6: Test valid withdrawal
 # - Verify that withdrawing a valid amount correctly decreases the balance.
@@ -184,6 +237,32 @@ def test_withdraw_insufficient_funds():
 # - Ensure passwords are properly hashed.
 # - Verify that password verification works correctly.
 # Target Methods: set_password() / check_password()
+
+# ===========================
+# Test: Test password hashing
+# Author: Barron McCarthy
+# Date: 2026-09-16
+# Description: Ensure passwords are properly hashed and
+# verify that password verification works correctly.
+# Issue: Add a test ensuring passwords are hashed, correct passwords are
+# being accepted, and incorrect passwords are being rejected.
+# ===========================
+
+def test_account_password_hashing():
+    """Test password hashing and verification"""
+    account = Account(name = "John Doe", email = "johndoe@example.com")
+
+    password = "Password123!"
+    account.set_password(password)
+
+    # Check if the the password is hashed by checking if equal to 'password'
+    assert account.password_hash != password
+
+    # Checks for correct password acceptance.
+    assert account.check_password(password) is True
+
+    # Checks for incorrect password rejection.
+    assert account.check_password("Password1234!") is False
 
 # Student 9: Test account deactivation/reactivation
 # - Ensure accounts can be deactivated and reactivated correctly.

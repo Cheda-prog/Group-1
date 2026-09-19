@@ -29,6 +29,40 @@ class TestCounterEndpoints:
         assert result.status_code == status.HTTP_201_CREATED
 
     # ===========================
+    # Test: List All Counters
+    # Author: Barron McCarthy
+    # Date: 2026-09-18
+    # Description: Ensures all existing counters and their values are returned
+    # ===========================
+    def test_list_all_counters(self, client):
+        """It should list all counters"""
+        client.post('/counters/foo')
+        client.post('/counters/bar')
+
+        result = client.get('/counters')
+
+        assert result.status_code == status.HTTP_200_OK
+        assert result.get_json() == {
+            "foo": 0,
+            "bar": 0
+        }
+    # ===========================
+    # Test: Incrementing Counter & Prevent updating non-existent counter
+    # Author: Christopher Flores
+    # Date: 2026-09-17
+    # Description: Ensures a counter increments properly & prevents updating a non-existent counter
+    # ===========================
+    def test_increment_counter(self, client):
+        """It should increment an existing counter"""
+        client.post('/counters/increment')
+        result = client.put('/counters/increment')
+        assert result.status_code == status.HTTP_200_OK
+        assert result.get_json()['increment'] == 1
+
+    def test_non_existent_counter(self, client):
+        """It should prevent updating a non-existent counter"""
+        result = client.put('/counters/noCounter')
+        assert result.status_code == status.HTTP_404_NOT_FOUND
     # Test: Delete a counter
     # Author: FinnWant
     # Date: 2026-09-16
@@ -62,3 +96,13 @@ class TestCounterEndpoints:
         assert result.status_code == status.HTTP_405_METHOD_NOT_ALLOWED
         assert result.get_json() is not None
         assert "error" in result.get_json()
+    # ===========================
+    # Test: Invalid counter names
+    # Author: Tyler Vu
+    # Date: 2026-09-16
+    # Description: Ensure non-alphanumeric coutner names don't pass
+    # ===========================
+    def test_create_invalid_counter_name(self, client):
+        """It should not create a counter with a non-alphanumeric name"""
+        result = client.post('/counters/foo!@#$%')
+        assert result.status_code == status.HTTP_400_BAD_REQUEST
